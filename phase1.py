@@ -50,6 +50,9 @@ def remove_outliers_and_illogical_data(converted_data: list[list[str]]) -> list[
 def total_charges(valid_data: list[list[str]]) -> float:
     """
     Calculate the total sum of all the charges recorded in the CSV file.
+    >>> total_charges([[30, 'female', 25.0, 1, False, 'southwest', 1000.0], 
+    ...                [40, 'male', 30.0, 2, True, 'southeast', 4000.0]])
+    5000.0
     """
     total = 0.0
     for row in valid_data:

@@ -1,3 +1,5 @@
 .venv/
 .json
 .vscode/
+__pycache__/
+*.pyc
