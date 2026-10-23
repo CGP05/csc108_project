@@ -90,7 +90,7 @@ def mean_number_of_children(valid_data: list[list[str]]) -> float:
 def ols_slope_bmi_and_charges(valid_data: list[list[str]]):
     """
     Calculate the OLS (ordinary least squares) regression beta 1 (slope) coefficient for "BMI" as the independent variable (x) and "charges" as the dependent variable (y).
-    Formula: sum of each individual BMI observation minues the mean BMI times each individual charges observation minues the mean charges, divided by the squared sum of each individual BMI observation minus the mean BMI.
+    Formula: sum of each individual BMI observation minus the mean BMI times each individual charges observation minues the mean charges, divided by the squared sum of each individual BMI observation minus the mean BMI.
     """
     n = len(valid_data)
 
