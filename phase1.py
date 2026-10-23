@@ -1,5 +1,3 @@
-# Utilized Google Gemini for a small amount of assisstance in structuring the functions
-
 csvfile = "insurance.csv"
 
 def load_data(csvfile: str) -> list[list[str]]:
@@ -16,25 +14,24 @@ def load_data(csvfile: str) -> list[list[str]]:
     return raw_data
 
 
-def convert_data_types(data: str):
+def convert_data_types(raw_data: list[list[str]]) -> list[list[str]]:
     """
     All from string, convert: age to int, bmi to float, children to int, smoker to bool, region to str, and charges to float
     """
     converted_data = []
-    for row in data:
+    for row in raw_data:
         age = int(row[0])
         sex = row[1]
         bmi = float(row[2])
         children = int(row[3])
-        smoker = bool(row[4].lower()) == "yes" #True if smoker and False if not a smoker
+        smoker = row[4].lower() == "yes" #True if smoker and False if not a smoker
         region = row[5]
         charges = float(row[6])
         converted_data.append([age, sex, bmi, children, smoker, region, charges])
     return converted_data
 
 
-def remove_outliers_and_illogical_data(converted_data: list[list[str]],
-) -> list[list[str]]:
+def remove_outliers_and_illogical_data(converted_data: list[list[str]]) -> list[list[str]]:
     """
     Even though the insurance.csv dataset does not have any illogical data (such as having negative children or a bmi of 0)
     """
@@ -73,33 +70,46 @@ def mean_number_of_children(valid_data: list[list[str]]) -> float:
     return mean_children
 
 
-def analyze_correlation(valid_data: list[list[str]]):
+def ols_slope_bmi_and_charges(valid_data: list[list[str]]):
     """
     Calculate the OLS (ordinary least squares) regression beta 1 (slope) coefficient for "BMI" as the independent variable (x) and "charges" as the dependent variable (y).
     Formula: sum of each individual BMI observation minues the mean BMI times each individual charges observation minues the mean charges, divided by the squared sum of each individual BMI observation minus the mean BMI.
     """
     n = len(valid_data)
 
-    bmis = 0.0
-    charges = 0.0
+    total_x = 0.0
+    total_y = 0.0
+    for row in valid_data:
+        total_x += row[2]
+        total_y += row[6]
 
-    mean_x = ...
-    mean_y = ...  # reusing the
+    mean_x = total_x / n
+    mean_y = total_y / n
+
+    numerator = 0.0
+    denominator = 0.0
+    for row in valid_data:
+        bmi = row[2]
+        charges = row[6]
+        numerator += (bmi - mean_x) * (charges - mean_y)
+        denominator += (bmi - mean_x) ** 2
+
+    slope = numerator / denominator if denominator != 0 else 0.0
+    return round(slope, 2)
 
 
-def main(data, total) -> None:
+def main(total, mean_children, slope) -> None:
     print(f"The total amount of claim charges is ${total}")
-    print("The mean number of children is {} and the standard deviation for number of children is {}.")
-    print("For every one unit increase in BMI, charges are expected to increase by {slope}. ")
+    print(f"The mean number of children is {mean_children}.")
+    print(f"For every one unit increase in BMI, charges are expected to increase by ${slope}.")
 
-    if __name__ == "__main__":
-    
+if __name__ == "__main__":    
     raw_data = load_data(csvfile)
     cleaned_data = convert_data_types(raw_data)
     valid_data = remove_outliers_and_illogical_data(cleaned_data)
     
     total = total_charges(valid_data)
     mean_children = mean_number_of_children(valid_data)
-    slope = analyze_correlation(valid_data)
+    slope = ols_slope_bmi_and_charges(valid_data)
 
     main(total, mean_children, slope)
