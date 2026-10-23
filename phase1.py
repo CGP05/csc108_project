@@ -23,11 +23,11 @@ def convert_data_types(data: str):
     converted_data = []
     for row in data:
         age = int(row[0])
-        sex = row[1].lower == "female" #change to boolean
+        sex = row[1]
         bmi = float(row[2])
         children = int(row[3])
-        smoker = row[4].lower() == "yes" #chage 
-        region = row[5] == "southwest" or "southeast" or "northwest" or "northeast"
+        smoker = bool(row[4].lower()) == "yes" #chage 
+        region = row[5]
         charges = float(row[6])
         converted_data.append([age, sex, bmi, children, smoker, region, charges])
     return converted_data
