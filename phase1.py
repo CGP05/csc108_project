@@ -43,9 +43,20 @@ def total_charges(data: list[list[str]]) -> float:
     for row in data:
         charges = float(row[6])
         total += charges
-    return total        
+    return total
 
-def analyze_correlations(data: list[list[str]]):
+def mean_number_of_children(data: list[list[str]]) -> float:
+    """
+    Calculate the mean number of children recorded in the CSV file.
+    """
+    total_children = 0
+    for row in data:
+        children = int(row[3])
+        total_children += children
+    mean_children = total_children / len(data)
+    return mean_children        
+
+def analyze_correlation(data: list[list[str]]):
     """
     Calculate the OLS (ordinary least squares) regression beta 1 (slope) coefficient for "BMI" as the independent variable (x) and "charges" as the dependent variable (y).
     Formula: sum of each individual BMI observation minues the mean BMI times each individual charges observation minues the mean charges, divided by the squared sum of each individual BMI observation minus the mean BMI.
@@ -57,8 +68,8 @@ def analyze_correlations(data: list[list[str]]):
     mean_y = ...
    
 def main(data,total) -> None:
-    print(data)
     print(f"The total amount of claim charges is ${total}")
+    print()
 
 if __name__ == "__main__":
     import doctest
