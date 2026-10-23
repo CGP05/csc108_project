@@ -30,13 +30,18 @@ def convert_data_types(data:str):
         region = row[5]
         charges = float(row[6])
 
+def remove_outliers_and_illogical_data(data: list[list[str]]) -> list[list[str]]:
+    """
+    Even though the insurance.csv dataset does not have any illogical data (such as having negative children or a bmi of 0)
+    """
+
 def total_charges(data: list[list[str]]) -> float:
     """
     Calculate the total sum of all the charges recorded in the CSV file.
     """
     total = 0.0
     for row in data:
-        charges = float(row[5])
+        charges = float(row[6])
         total += charges
     return total        
 
@@ -45,16 +50,19 @@ def analyze_correlations(data: list[list[str]]):
     Calculate the OLS (ordinary least squares) regression beta 1 (slope) coefficient for "BMI" as the independent variable (x) and "charges" as the dependent variable (y).
     Formula: sum of each individual BMI observation minues the mean BMI times each individual charges observation minues the mean charges, divided by the squared sum of each individual BMI observation minus the mean BMI.
     """
-    bmis = ...
+    bmis = 0.0 
     charges = ...
 
     mean_x = ...
     mean_y = ...
    
-def main(data) -> None:
+def main(data,total) -> None:
     print(data)
+    print(f"The total amount of claim charges is ${total}")
 
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
-    main(data)
+    data = load_data(csvfile)
+    total = total_charges(data)
+    main(data, total)
