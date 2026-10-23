@@ -42,7 +42,7 @@ def remove_outliers_and_illogical_data(converted_data: list[list[str]]) -> list[
         children = row[3]
         charges = row[6]
 
-        if age > 0 and bmi > 0.0 and children >= 0 and charges > 0.0:
+        if age > 0 and bmi > 0.0 and children >= 0 and charges > 0.0: #removing logically impossible data
             valid_data.append(row)
     return valid_data
 
@@ -56,6 +56,20 @@ def total_charges(valid_data: list[list[str]]) -> float:
         charges = float(row[6])
         total += charges
     return round(total, 2)
+
+
+def percent_high_claims(valid_data: list) -> float:
+    """
+    Calculate the percentage of claims that exceed $50,000.
+    """
+    high_count = 0
+    for row in valid_data:
+        charges = row[6]
+        if charges > 50000.0000:
+            high_count += 1
+            
+    percentage = (high_count / len(valid_data)) * 100
+    return round(percentage, 2)
 
 
 def mean_number_of_children(valid_data: list[list[str]]) -> float:
@@ -98,8 +112,9 @@ def ols_slope_bmi_and_charges(valid_data: list[list[str]]):
     return round(slope, 2)
 
 
-def main(total, mean_children, slope) -> None:
+def main(total, mean_children, slope, percentage) -> None:
     print(f"The total amount of claim charges is ${total}")
+    print(f"The percentage of claims greater than $50,000 is {percentage}%")
     print(f"The mean number of children is {mean_children}.")
     print(f"For every one unit increase in BMI, charges are expected to increase by ${slope}.")
 
@@ -111,5 +126,6 @@ if __name__ == "__main__":
     total = total_charges(valid_data)
     mean_children = mean_number_of_children(valid_data)
     slope = ols_slope_bmi_and_charges(valid_data)
+    percentage = percent_high_claims(valid_data)
 
-    main(total, mean_children, slope)
+    main(total, mean_children, slope, percentage)
