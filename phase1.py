@@ -26,7 +26,7 @@ def convert_data_types(data: str):
         sex = row[1]
         bmi = float(row[2])
         children = int(row[3])
-        smoker = bool(row[4].lower()) == "yes" #chage 
+        smoker = bool(row[4].lower()) == "yes" #True if smoker and False if not a smoker
         region = row[5]
         charges = float(row[6])
         converted_data.append([age, sex, bmi, children, smoker, region, charges])
@@ -55,29 +55,31 @@ def total_charges(valid_data: list[list[str]]) -> float:
     Calculate the total sum of all the charges recorded in the CSV file.
     """
     total = 0.0
-    for row in data:
+    for row in valid_data:
         charges = float(row[6])
         total += charges
     return round(total, 2)
 
 
-def mean_number_of_children(data: list[list[str]]) -> float:
+def mean_number_of_children(valid_data: list[list[str]]) -> float:
     """
     Calculate the mean number of children recorded in the CSV file.
     """
     total_children = 0
-    for row in data:
+    for row in valid_data:
         children = int(row[3])
         total_children += children
-    mean_children = total_children / len(data)
+    mean_children = total_children / len(valid_data)
     return mean_children
 
 
-def analyze_correlation(data: list[list[str]]):
+def analyze_correlation(valid_data: list[list[str]]):
     """
     Calculate the OLS (ordinary least squares) regression beta 1 (slope) coefficient for "BMI" as the independent variable (x) and "charges" as the dependent variable (y).
     Formula: sum of each individual BMI observation minues the mean BMI times each individual charges observation minues the mean charges, divided by the squared sum of each individual BMI observation minus the mean BMI.
     """
+    n = len(valid_data)
+
     bmis = 0.0
     charges = 0.0
 
@@ -99,3 +101,5 @@ def main(data, total) -> None:
     total = total_charges(valid_data)
     mean_children = mean_number_of_children(valid_data)
     slope = analyze_correlation(valid_data)
+
+    main(total, mean_children, slope)
