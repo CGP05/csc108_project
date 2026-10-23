@@ -2,7 +2,6 @@
 
 csvfile = "insurance.csv"
 
-
 def load_data(csvfile: str) -> list[list[str]]:
     """Loads the data from the csv file, checks that each row has 7 columns, and returns rows as a list of strings.
     Precondition: csvfile must point to a valid CSV file.
@@ -14,7 +13,7 @@ def load_data(csvfile: str) -> list[list[str]]:
             row = line.strip().split(",")  # tokenizing
             if len(row) == 7: #ensuring that there is data for each column for each row
                 raw_data.append(row)
-    return data
+    return raw_data
 
 
 def convert_data_types(data: str):
@@ -24,13 +23,14 @@ def convert_data_types(data: str):
     converted_data = []
     for row in data:
         age = int(row[0])
-        sex = row[1]
+        sex = row[1].lower == "female" #change to boolean
         bmi = float(row[2])
         children = int(row[3])
-        smoker = row[4].lower() == "yes"
-        region = row[5]
+        smoker = row[4].lower() == "yes" #chage 
+        region = row[5] == "southwest" or "southeast" or "northwest" or "northeast"
         charges = float(row[6])
-        return converted_data
+        converted_data.append([age, sex, bmi, children, smoker, region, charges])
+    return converted_data
 
 
 def remove_outliers_and_illogical_data(converted_data: list[list[str]],
@@ -87,16 +87,15 @@ def analyze_correlation(data: list[list[str]]):
 
 def main(data, total) -> None:
     print(f"The total amount of claim charges is ${total}")
-    print(
-        "The mean number of children is ... and the standard deviation for number of children is ..."
-    )
-    print("For every one unit increase in BMI, ")
+    print("The mean number of children is {} and the standard deviation for number of children is {}.")
+    print("For every one unit increase in BMI, charges are expected to increase by {slope}. ")
 
-
-if __name__ == "__main__":
-    import doctest
-
-    doctest.testmod()
-    data = load_data(csvfile)
-    total = total_charges(data)
-    main(data, total)
+    if __name__ == "__main__":
+    
+    raw_data = load_data(csvfile)
+    cleaned_data = convert_data_types(raw_data)
+    valid_data = remove_outliers_and_illogical_data(cleaned_data)
+    
+    total = total_charges(valid_data)
+    mean_children = mean_number_of_children(valid_data)
+    slope = analyze_correlation(valid_data)
