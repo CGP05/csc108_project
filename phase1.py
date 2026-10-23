@@ -1,4 +1,4 @@
-#Utilized Google Gemini for a small amount of help in structuring the functions
+#Utilized Google Gemini for a small amount of assisstance in structuring the functions
 
 csvfile = "insurance.csv"
 
@@ -34,6 +34,7 @@ def remove_outliers_and_illogical_data(data: list[list[str]]) -> list[list[str]]
     """
     Even though the insurance.csv dataset does not have any illogical data (such as having negative children or a bmi of 0)
     """
+    return data
 
 def total_charges(data: list[list[str]]) -> float:
     """
@@ -43,7 +44,7 @@ def total_charges(data: list[list[str]]) -> float:
     for row in data:
         charges = float(row[6])
         total += charges
-    return total
+    return round(total, 2)
 
 def mean_number_of_children(data: list[list[str]]) -> float:
     """
@@ -62,14 +63,15 @@ def analyze_correlation(data: list[list[str]]):
     Formula: sum of each individual BMI observation minues the mean BMI times each individual charges observation minues the mean charges, divided by the squared sum of each individual BMI observation minus the mean BMI.
     """
     bmis = 0.0 
-    charges = ...
+    charges = 0.0
 
     mean_x = ...
     mean_y = ...
    
 def main(data,total) -> None:
     print(f"The total amount of claim charges is ${total}")
-    print()
+    print(f"The mean number of children is ... and the standard deviation for number of children is ...")
+    print(f"For every one unit increase in BMI, ")
 
 if __name__ == "__main__":
     import doctest
