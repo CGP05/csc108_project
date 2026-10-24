@@ -3,6 +3,9 @@ csvfile = "insurance.csv"
 def load_data(csvfile: str) -> list[list[str]]:
     """Loads the data from the csv file, checks that each row has 7 columns, and returns rows as a list of strings.
     Precondition: csvfile must point to a valid CSV file.
+    >>> data = load_data("insurance.csv")
+    >>> data[0]
+    ['29', 'female', '27.9', '0', 'yes', 'southwest', '16884.924']
     """
     raw_data = []
     with open(csvfile, "r") as file:
@@ -17,6 +20,8 @@ def load_data(csvfile: str) -> list[list[str]]:
 def convert_data_types(raw_data: list[list[str]]) -> list[list[str]]:
     """
     All from string, convert: age to int, bmi to float, children to int, smoker to bool, region to str, and charges to float
+    >>> convert_data_types([['29', 'female', '27.9', '0', 'yes', 'southwest', '16884.924']])
+    [[29, 'female', 27.9, 0, True, 'southwest', 16884.924]]
     """
     converted_data = []
     for row in raw_data:
@@ -33,7 +38,9 @@ def convert_data_types(raw_data: list[list[str]]) -> list[list[str]]:
 
 def remove_outliers_and_illogical_data(converted_data: list[list[str]]) -> list[list[str]]:
     """
-    Even though the insurance.csv dataset does not have any illogical data (such as having negative children or a bmi of 0)
+    Even though the insurance.csv dataset does not have any illogical data (such as having negative children or a bmi of zero)
+    >>> remove_outliers_and_illogical_data([[-29, 'female', 0.0, -1, True, 'southwest', 1000.000]])
+    []
     """
     valid_data = []
     for row in converted_data:
@@ -42,7 +49,7 @@ def remove_outliers_and_illogical_data(converted_data: list[list[str]]) -> list[
         children = row[3]
         charges = row[6]
 
-        if age > 0 and bmi > 0.0 and children >= 0 and charges > 0.0: #removing logically impossible data
+        if age > 0 and bmi > 0.0 and children >= 0 and charges > 0.0: #removing irrational data
             valid_data.append(row)
     return valid_data
 
@@ -50,9 +57,8 @@ def remove_outliers_and_illogical_data(converted_data: list[list[str]]) -> list[
 def total_charges(valid_data: list[list[str]]) -> float:
     """
     Calculate the total sum of all the charges recorded in the CSV file.
-    >>> total_charges([[30, 'female', 25.0, 1, False, 'southwest', 1000.0], 
-    ...                [40, 'male', 30.0, 2, True, 'southeast', 4000.0]])
-    5000.0
+    >>> total_charges([[29, 'female', 27.9, 0, True, 'southwest', 16884.924], [28, 'male', 33.77, 1, False, 'southeast', 1725.5523]])
+    18610.48
     """
     total = 0.0
     for row in valid_data:
@@ -64,6 +70,8 @@ def total_charges(valid_data: list[list[str]]) -> float:
 def percent_high_claims(valid_data: list) -> float:
     """
     Calculate the percentage of claims that exceed $50,000.
+    >>> percent_high_claims([[29, 'female', 27.9, 0, True, 'southwest', 16884.924], [28, 'male', 33.77, 1, False, 'southeast', 99999.999]])
+    50.0
     """
     high_count = 0
     for row in valid_data:
@@ -78,6 +86,8 @@ def percent_high_claims(valid_data: list) -> float:
 def mean_number_of_children(valid_data: list[list[str]]) -> float:
     """
     Calculate the mean number of children recorded in the CSV file.
+    >>> mean_number_of_children([[29, 'female', 27.9, 0, True, 'southwest', 16884.924], [28, 'male', 33.77, 1, False, 'southeast', 99999.999]])
+    0.5
     """
     total_children = 0
     for row in valid_data:
@@ -91,6 +101,8 @@ def ols_slope_bmi_and_charges(valid_data: list[list[str]]):
     """
     Calculate the OLS (ordinary least squares) regression beta 1 (slope) coefficient for "BMI" as the independent variable (x) and "charges" as the dependent variable (y).
     Formula: sum of each individual BMI observation minus the mean BMI times each individual charges observation minues the mean charges, divided by the squared sum of each individual BMI observation minus the mean BMI.
+    >>> ols_slope_bmi_and_charges([[30, 'female', 20.0, 1, False, 'southwest', 1000.0],[40, 'male', 30.0, 2, True, 'southeast', 3000.0]])
+    200.0
     """
     n = len(valid_data)
 
