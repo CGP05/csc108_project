@@ -1,3 +1,5 @@
 Used Gemini for brainstorming about which functions to break the assignment down into, and for some help in polishing the formatting of the functions.
 
 Used ChatGPT to find logic errors on the rough copy of the completed script.
+
+The decomposition image was fully made by ChatGPT.
