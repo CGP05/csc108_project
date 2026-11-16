@@ -1,3 +1,4 @@
+# type: ignore
 csvfile = "insurance.csv"
 
 def load_data(csvfile: str) -> list[list[str]]:

@@ -57,19 +57,6 @@ def remove_outliers_and_illogical_data(converted_data: list[list[Any]]) -> list[
     return valid_data
 
 
-def total_charges(valid_data: list[list[Any]]) -> float:
-    """
-    Calculate the total sum of all the charges recorded in the CSV file.
-    >>> total_charges([[29, 'female', 27.9, 0, True, 'southwest', 16884.924], [28, 'male', 33.77, 1, False, 'southeast', 1725.5523]])
-    18610.48
-    """
-    total = 0.0
-    for row in valid_data:
-        charges = row[6]
-        total += charges
-    return round(total, 2)
-
-
 def percent_high_claims(valid_data: list[list[Any]]) -> float:
     """
     Calculate the percentage of claims that exceed $50,000.
@@ -132,20 +119,20 @@ def ols_slope_bmi_and_charges(valid_data: list[list[Any]]) -> float:
 
 def main(total: float, mean_children: float, slope: float, percentage: float) -> None:
     """Print the summary statistics for the insurance claims dataset."""
-    print(f"The total amount of claim charges is ${total}")
     print(f"The percentage of claims greater than $50,000 is {percentage}%")
     print(f"The mean number of children is {mean_children}.")
     print(f"For every one unit increase in BMI, charges are expected to increase by ${slope}.")
 
 
 if __name__ == "__main__":
+    import doctest
+    doctest.testmod(verbose=True)
     raw_data = load_data(CSV_FILE)
     cleaned_data = convert_data_types(raw_data)
     valid_data = remove_outliers_and_illogical_data(cleaned_data)
 
-    total_val = total_charges(valid_data)
     mean_children_val = mean_number_of_children(valid_data)
     slope_val = ols_slope_bmi_and_charges(valid_data)
     percentage_val = percent_high_claims(valid_data)
 
-    main(total_val, mean_children_val, slope_val, percentage_val)
+    main(mean_children_val, slope_val, percentage_val)
