@@ -1,0 +1,7 @@
+**changes from the phase 1
+
+-removed total_charges function
+
+-added precondition to prevent dividing by zero to the functions percent_high_claims, mean_number_of_children, ols_slope_bmi_and_charges.
+
+-

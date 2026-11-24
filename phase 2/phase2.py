@@ -65,6 +65,8 @@ def remove_outliers_and_illogical_data(
 
 def percent_high_claims(valid_data: list[list[Any]]) -> float:
     """
+    Precondition: len(valid_data) != 0
+
     Calculate the percentage of claims that exceed $50,000.
     >>> percent_high_claims([[29, 'female', 27.9, 0, True, 'southwest', 16884.924], [28, 'male', 33.77, 1, False, 'southeast', 99999.999]])
     50.0
@@ -81,7 +83,10 @@ def percent_high_claims(valid_data: list[list[Any]]) -> float:
 
 def mean_number_of_children(valid_data: list[list[Any]]) -> float:
     """
+    Precondition: len(valid_data) != 0
+
     Calculate the mean number of children recorded in the CSV file.
+    
     >>> mean_number_of_children([[29, 'female', 27.9, 0, True, 'southwest', 16884.924], [28, 'male', 33.77, 1, False, 'southeast', 99999.999]])
     0.5
     """
@@ -95,6 +100,9 @@ def mean_number_of_children(valid_data: list[list[Any]]) -> float:
 
 def ols_slope_bmi_and_charges(valid_data: list[list[Any]]) -> float:
     """
+
+    Precondition: len(valid_data) != 0
+
     Calculate the OLS (ordinary least squares) regression beta 1 (slope) coefficient for "BMI" as the independent variable (x) and "charges" as the dependent variable (y).
     Formula: sum of each individual BMI observation minus the mean BMI times each individual charges observation minues the mean charges, divided by the squared sum of each individual BMI observation minus the mean BMI.
     >>> ols_slope_bmi_and_charges([[30, 'female', 20.0, 1, False, 'southwest', 1000.0],[40, 'male', 30.0, 2, True, 'southeast', 3000.0]])
