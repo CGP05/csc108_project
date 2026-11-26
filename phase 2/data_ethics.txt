@@ -1,3 +1,10 @@
-My data source was posted on Kaggle by a user named "a1233biology" on April 3rd 2020. However, the Kaggle page does not state who "collected this data and for what purpose".
+1.  Where the data came from: My data source was posted on Kaggle by a user named "a1233biology" on April 3rd 2020. 
+    However, the Kaggle page does not state who "collected this data and for what purpose".
 
-The dataset describes patients from accross c
+2.  Who is in the data and who is not: The dataset contains 7 different categories of data per observation/individual 
+    (their age, sex, bmi, if they have children or not, if they smoke or not, if the region of Canada that they live in is 
+    northeast, northwest, southeast, or southwest, 
+    and their total amount of claim charges for this health insurance plan) from 1339 Canadian patients.
+
+3.  How the findings could be used: I beleive that this dataset (as well as other data sets that are very similar to this) 
+    could be used to 

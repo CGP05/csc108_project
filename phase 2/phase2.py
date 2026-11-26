@@ -15,9 +15,7 @@ def load_data(csvfile: str) -> list[list[str]]:
         file.readline()  # to skip header
         for line in file:
             row = line.strip().split(",")  # tokenizing
-            if (
-                len(row) == 7
-            ):  # ensuring that there is data for each column for each row
+            if (len(row) == 7):  # ensuring that there is data for each column for each row
                 raw_data.append(row)
     return raw_data
 
@@ -41,9 +39,7 @@ def convert_data_types(raw_data: list[list[str]]) -> list[list[Any]]:
     return converted_data
 
 
-def remove_outliers_and_illogical_data(
-    converted_data: list[list[Any]],
-) -> list[list[Any]]:
+def remove_outliers_and_illogical_data(converted_data: list[list[Any]]) -> list[list[Any]]:
     """
     Even though the insurance.csv dataset does not have any illogical data (such as having negative children or a bmi of zero)
     >>> remove_outliers_and_illogical_data([[-29, 'female', 0.0, -1, True, 'southwest', 1000.000]])
@@ -56,9 +52,7 @@ def remove_outliers_and_illogical_data(
         children = row[3]
         charges = row[6]
 
-        if (
-            age > 0 and bmi > 0.0 and children >= 0 and charges > 0.0
-        ):  # removing irrational data
+        if (age > 0 and bmi > 0.0 and children >= 0 and charges > 0.0):  # removing irrational data
             valid_data.append(row)
     return valid_data
 
@@ -130,6 +124,20 @@ def ols_slope_bmi_and_charges(valid_data: list[list[Any]]) -> float:
     slope = numerator / denominator if denominator != 0 else 0.0
     return round(slope, 2)
 
+def average_charges_by_region(valid_data: list) -> list[dict]:
+    """
+    Calculate the mean charge for each of the 4 regions.
+    """
+
+def percent_smoker_by_region(valid_data: list) -> list[dict]:
+    """
+    Calculate the percentage of smokers for each region.
+    """
+
+def charges_ranked_by_region(valid_data: list):
+    """
+    Use selection sort to rank the 4 regions from highest to lowest average charge. 
+    """
 
 def main(mean_children: float, slope: float, percentage: float) -> None:
     """Print the summary statistics for the insurance claims dataset."""
