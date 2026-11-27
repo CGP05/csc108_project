@@ -162,6 +162,8 @@ def main(slope: float, percentage: float) -> None:
     """Print the summary statistics for the insurance claims dataset."""
     print(f"The percentage of claims greater than $50,000 is approximately {percentage}%")
     print(f"For every one unit increase in BMI, charges are expected to increase by ${slope}.")
+    print(f"The average insurance claim charges and percent smokers by region are as follows: {} mean claim charges and {} percent smokers for southeast, {} mean claim charges and {} percent smokers for southwest, {} mean claim charges and {} percent smokers for for northeast, and {} mean claim charges and {} percent smokers for northwest.")
+
 
 
 if __name__ == "__main__":
