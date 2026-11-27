@@ -75,26 +75,9 @@ def percent_high_claims(valid_data: list[list[Any]]) -> float:
     return round(percentage, 2)
 
 
-def mean_number_of_children(valid_data: list[list[Any]]) -> float:
-    """
-    Precondition: len(valid_data) != 0
-
-    Calculate the mean number of children recorded in the CSV file.
-    
-    >>> mean_number_of_children([[29, 'female', 27.9, 0, True, 'southwest', 16884.924], [28, 'male', 33.77, 1, False, 'southeast', 99999.999]])
-    0.5
-    """
-    total_children = 0
-    for row in valid_data:
-        children = row[3]
-        total_children += children
-    mean_children = total_children / len(valid_data)
-    return mean_children
-
 
 def ols_slope_bmi_and_charges(valid_data: list[list[Any]]) -> float:
     """
-
     Precondition: len(valid_data) != 0
 
     Calculate the OLS (ordinary least squares) regression beta 1 (slope) coefficient for "BMI" as the independent variable (x) and "charges" as the dependent variable (y).
@@ -124,25 +107,32 @@ def ols_slope_bmi_and_charges(valid_data: list[list[Any]]) -> float:
     slope = numerator / denominator if denominator != 0 else 0.0
     return round(slope, 2)
 
-def average_charges_by_region(valid_data: list) -> list[dict]:
+
+def average_charges_by_region(valid_data: list) -> dict[str, float]:
     """
     Calculate the mean charge for each of the 4 regions.
     """
 
-def percent_smoker_by_region(valid_data: list) -> list[dict]:
+    return mean_charges_regions
+
+
+def percent_smoker_by_region(valid_data: list) -> dict[str, float]:
     """
     Calculate the percentage of smokers for each region.
     """
 
-def charges_ranked_by_region(valid_data: list):
+    return percent_smoker_regions
+
+def charges_ranked_by_region(mean_regional_charges: dict[str,float]) -> list[str]:
     """
     Use selection sort to rank the 4 regions from highest to lowest average charge. 
     """
 
-def main(mean_children: float, slope: float, percentage: float) -> None:
+
+
+def main(slope: float, percentage: float) -> None:
     """Print the summary statistics for the insurance claims dataset."""
-    print(f"The percentage of claims greater than $50,000 is {percentage}%")
-    print(f"The mean number of children is {mean_children}.")
+    print(f"The percentage of claims greater than $50,000 is approximately {percentage}%")
     print(f"For every one unit increase in BMI, charges are expected to increase by ${slope}.")
 
 
@@ -154,8 +144,7 @@ if __name__ == "__main__":
     cleaned_data = convert_data_types(raw_data)
     valid_data = remove_outliers_and_illogical_data(cleaned_data)
 
-    mean_children_val = mean_number_of_children(valid_data)
     slope_val = ols_slope_bmi_and_charges(valid_data)
     percentage_val = percent_high_claims(valid_data)
 
-    main(mean_children_val, slope_val, percentage_val)
+    main(slope_val, percentage_val)

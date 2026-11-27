@@ -2,9 +2,15 @@
     However, the Kaggle page does not state who "collected this data and for what purpose".
 
 2.  Who is in the data and who is not: The dataset contains 7 different categories of data per observation/individual 
-    (their age, sex, bmi, if they have children or not, if they smoke or not, if the region of Canada that they live in is 
-    northeast, northwest, southeast, or southwest, 
-    and their total amount of claim charges for this health insurance plan) from 1339 Canadian patients.
+    (their age, sex, bmi, the number of children they have, if they smoke or not, if the region of Canada that they live in is 
+    northeast, northwest, southeast, or southwest, and their total amount of claim charges for this health insurance plan) 
+    from 1339 Canadian patients. This dataset is a sample rather than the entire population of people with health insurance in Canada, 
+    and does not contain data of people who are not Canadians with health insurance.
 
-3.  How the findings could be used: I beleive that this dataset (as well as other data sets that are very similar to this) 
-    could be used to 
+    Also, it is important to note that even though the Kaggle page says that this is Canadian data the 4 region titles are usually used more
+    for the United States than for Canada.
+
+3.  How the findings could be used: I believe that this dataset (as well as other data sets that are very similar to this) 
+    could be used to inform both public policy as well as private sector business strategy. For example, the function percent_high_claims() 
+    calculates that approximately 0.52% of the indivudial claims in this data, which could be used for private sector analysts or public 
+    to investigate for possible fraud or if they simply have much greater than average medical issues.
