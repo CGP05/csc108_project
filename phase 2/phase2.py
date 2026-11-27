@@ -118,8 +118,12 @@ def average_charges_by_region(valid_data: list) -> dict[str, float]:
         region = row[5]
         charges = row[6]
 
-        charges_by_region[region].append(charges)
-        
+        if region not in charges_by_region:
+            charges_by_region[region] = [charges]
+        else:
+            charges_by_region[region].append(charges)
+
+
     mean_charges_by_region = {}
     for region in charges_by_region.items():
         total = 0.0
