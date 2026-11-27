@@ -123,22 +123,31 @@ def average_charges_by_region(valid_data: list) -> dict[str, float]:
         else:
             charges_by_region[region].append(charges)
 
-
     mean_charges_by_region = {}
-    for region in charges_by_region.items():
-        total = 0.0
-        for charge in charges_by_region[region]:
-            total += charge
-        mean = total / len(charges_by_region[region])
-        mean_charges_by_region[region] = mean_charges_by_region
 
-    return mean_charges_regions
+    for region, charges_list in charges_by_region.items():
+        total = 0.0
+
+        for charge in charges_list:
+            total += charge
+
+        mean = total / len(charges_list)
+        mean_charges_by_region[region] = round(mean, 2)
+
+
+    return mean_charges_by_region
 
 
 def percent_smoker_by_region(valid_data: list) -> dict[str, float]:
     """
     Calculate the percentage of smokers for each region.
     """
+    smokers_by_region = {}
+    total_by_region = {}
+
+    for row in valid_data:
+        region = row[5]
+        smoker = row[4]
     
     return percent_smoker_regions
 
@@ -146,8 +155,8 @@ def charges_ranked_by_region(mean_regional_charges: dict[str,float]) -> list[str
     """
     Use selection sort to rank the 4 regions from highest to lowest average charge. 
     """
-
-
+    
+    return reginal_charges_sorted
 
 def main(slope: float, percentage: float) -> None:
     """Print the summary statistics for the insurance claims dataset."""
