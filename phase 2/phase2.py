@@ -112,6 +112,21 @@ def average_charges_by_region(valid_data: list) -> dict[str, float]:
     """
     Calculate the mean charge for each of the 4 regions.
     """
+    charges_by_region = {}
+    
+    for row in valid_data:
+        region = row[5]
+        charges = row[6]
+
+        charges_by_region[region].append(charges)
+        
+    mean_charges_by_region = {}
+    for region in charges_by_region.items():
+        total = 0.0
+        for charge in charges_by_region[region]:
+            total += charge
+        mean = total / len(charges_by_region[region])
+        mean_charges_by_region[region] = mean_charges_by_region
 
     return mean_charges_regions
 
@@ -120,7 +135,7 @@ def percent_smoker_by_region(valid_data: list) -> dict[str, float]:
     """
     Calculate the percentage of smokers for each region.
     """
-
+    
     return percent_smoker_regions
 
 def charges_ranked_by_region(mean_regional_charges: dict[str,float]) -> list[str]:
