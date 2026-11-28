@@ -184,19 +184,27 @@ def percent_smoker_by_region(valid_data: list) -> dict[str, float]:
     return percent_smoker_by_region
 
 
-def highest_charge_region(mean_charges_by_region: dict, index: int) -> int:
+def highest_charge_region(
+    mean_charges_by_region: dict,
+    index: int,
+    regions: list[str] | None = None,
+) -> int:
     """
     Find the region with the highest mean claim charges and return its index.
 
     >>> highest_charge_region({'southwest': 2000.0, 'southeast': 3000.0, 'northwest': 1000.0}, 0)
     1
     """
-    each_region = list(mean_charges_by_region.keys())
+    if regions is None:
+        regions = list(mean_charges_by_region.keys())
+
     index_of_highest_region = index
 
-    for region_index in range(index, len(each_region)):
-        if ((mean_charges_by_region[each_region[index_of_highest_region]])
-            < mean_charges_by_region[each_region[region_index]]):
+    for region_index in range(index, len(regions)):
+        if (
+            mean_charges_by_region[regions[index_of_highest_region]]
+            < mean_charges_by_region[regions[region_index]]
+        ):
             index_of_highest_region = region_index
 
     return index_of_highest_region
@@ -208,12 +216,14 @@ def charges_ranked_by_region(mean_regional_charges: dict[str, float]) -> list[st
 
     >>> charges_ranked_by_region({'southwest': 2000.0, 'southeast': 3000.0, 'northwest': 1000.0})
     ['southeast', 'southwest', 'northwest']
+    >>> charges_ranked_by_region({'southwest': 2000.0, 'southeast': 3000.0, 'northwest': 2500.0})
+    ['southeast', 'northwest', 'southwest']
     """
     regions = list(mean_regional_charges.keys())
 
     for region_index in range(len(regions) - 1):
         swap_index = highest_charge_region(
-            mean_regional_charges, region_index
+            mean_regional_charges, region_index, regions
         )
         regions[region_index], regions[swap_index] = (
             regions[swap_index],
@@ -233,10 +243,12 @@ def main(slope: float, percentage: float, mean_charges_by_region: dict, percent_
     The percentage of claims greater than $50,000 is approximately 0.52%
     For every one unit increase in BMI, charges are expected to increase by $393.87.
     The average insurance claim charges and percent smokers by region are: $14735.41 mean claim charges, and 25.0% smokers for southeast, $12346.94 mean claim charges, and 17.85% smokers for southwest, $13406.38 mean claim charges, and 20.68% smokers for northeast, and $12417.58 mean claim charges, and 17.85% smokers for northwest.
+    The three regions ranked from highest to lowest average charge are: southeast, northeast, northwest
     The index of the highest region is 0
     
     """
     index_of_highest_region = highest_charge_region(mean_charges_by_region, 0)
+    ranked_regions = charges_ranked_by_region(mean_charges_by_region)
     print(f"The percentage of claims greater than $50,000 is approximately {percentage}%")
     print(f"For every one unit increase in BMI, charges are expected to increase by ${slope}.")
     print(
@@ -249,6 +261,10 @@ def main(slope: float, percentage: float, mean_charges_by_region: dict, percent_
         f"{percent_smoker_by_region['northeast']}% smokers for northeast, and "
         f"${mean_charges_by_region['northwest']} mean claim charges, and "
         f"{percent_smoker_by_region['northwest']}% smokers for northwest."
+    )
+    print(
+        "The three regions ranked from highest to lowest average charge are: "
+        + ", ".join(ranked_regions[:3])
     )
     print(f"The index of the highest region is {index_of_highest_region}")
 
