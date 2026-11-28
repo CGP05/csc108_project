@@ -1,4 +1,4 @@
-I used Gemini to helpp correct my errors from phase 1 where I treated strings as integer objects.
+I used Gemini to help correct my errors from phase 1 where I treated strings as integer objects.
 
 I used ChatGPT to brainstorm which functions to add using week 7 to 10 material.
 

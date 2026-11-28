@@ -89,7 +89,10 @@ def ols_slope_bmi_and_charges(valid_data: list[list[Any]]) -> float:
     Formula: sum of each individual BMI observation minus the mean BMI times each individual charges observation minues the mean charges, divided by the squared sum of each individual BMI observation minus the mean BMI.
     >>> ols_slope_bmi_and_charges([[30, 'female', 20.0, 1, False, 'southwest', 1000.0],[40, 'male', 30.0, 2, True, 'southeast', 3000.0]])
     200.0
-    >>>
+    >>> ols_slope_bmi_and_charges([[30, 'female', 20.0, 1, False, 'southwest', 1000.0]])
+    0.0
+    >>> ols_slope_bmi_and_charges([[30, 'female', 20.0, 1, False, 'southwest', 1000.0], [40, 'male', 20.0, 2, True, 'southeast', 3000.0]])
+    0.0
     """
     n = len(valid_data)
 
@@ -118,7 +121,7 @@ def average_charges_by_region(valid_data: list) -> dict[str, float]:
     """
     Calculate the mean charge for each of the 4 regions.
 
-    >>> average_charges_by_region([[29, "female", 27.9, 0, True, "southwest", 1000.0], [28, 'male', 33.77, 1, False, 'southwest', 3000.0], [40, 'male', 30.0, 2, True, 'southeast', 2000.0]]))
+    >>> average_charges_by_region([[29, "female", 27.9, 0, True, "southwest", 1000.0], [28, 'male', 33.77, 1, False, 'southwest', 3000.0], [40, 'male', 30.0, 2, True, 'southeast', 2000.0]])
     {'southwest': 2000.0, 'southeast': 2000.0}
     """
     charges_by_region = {}
@@ -149,6 +152,9 @@ def average_charges_by_region(valid_data: list) -> dict[str, float]:
 def percent_smoker_by_region(valid_data: list) -> dict[str, float]:
     """
     Calculate the percentage of smokers for each region.
+
+    >>> percent_smoker_by_region([[29, 'female', 27.9, 0, True, 'southwest', 1000.0], [28, 'male', 33.77, 1, False, 'southwest', 3000.0], [40, 'male', 30.0, 2, True, 'southeast', 2000.0]])
+    {'southwest': 50.0, 'southeast': 100.0}
     """
     smokers_by_region = {}
     total_by_region = {}
@@ -178,16 +184,18 @@ def percent_smoker_by_region(valid_data: list) -> dict[str, float]:
 
 def find_region_with_highest_charges(mean_charges_by_region: dict, index: int) -> int:
     """
-    Find the region with the highest mean claim charges and return its index
+    Find the region with the highest mean claim charges and return its index.
+
+    >>> find_region_with_highest_charges(
+        {'southwest': 2000.0, 'southeast': 3000.0, 'northwest': 1000.0}, 0))
+    1
     """
     each_region = list(mean_charges_by_region.keys())
     index_of_highest_region = index
 
     for region_index in range(index, len(each_region)):
-        if (
-            (mean_charges_by_region[each_region[index_of_highest_region]])
-            < mean_charges_by_region[each_region[region_index]]
-        ):
+        if ((mean_charges_by_region[each_region[index_of_highest_region]])
+            < mean_charges_by_region[each_region[region_index]]):
             index_of_highest_region = region_index
 
     return index_of_highest_region
@@ -196,6 +204,9 @@ def find_region_with_highest_charges(mean_charges_by_region: dict, index: int) -
 def charges_ranked_by_region(mean_regional_charges: dict[str, float]) -> list[str]:
     """
     Use selection sort to rank the 4 regions from highest to lowest average charge.
+
+    >>> charges_ranked_by_region({'southwest': 2000.0, 'southeast': 3000.0, 'northwest': 1000.0})
+    ['southeast', 'southwest', 'northwest']
     """
     regions = list(mean_regional_charges.keys())
 
@@ -212,16 +223,23 @@ def charges_ranked_by_region(mean_regional_charges: dict[str, float]) -> list[st
 
 
 def main(slope: float, percentage: float, mean_charges_by_region: dict, percent_smoker_by_region: dict,) -> None:
-    """Print the summary statistics for the insurance claims dataset."""
+    """Print the summary statistics for the insurance claims dataset.
+    >>> main(393.87, 0.52,
+    ...      {'southeast': 14735.41, 'southwest': 12346.94,
+    ...       'northeast': 13406.38, 'northwest': 12417.58},
+    ...      {'southeast': 25.0, 'southwest': 17.85,
+    ...       'northeast': 20.68, 'northwest': 17.85})
+    The percentage of claims greater than $50,000 is approximately 0.52%
+    For every one unit increase in BMI, charges are expected to increase by $393.87.
+    The average insurance claim charges and percent smokers by region are: $14735.41 mean claim charges, and 25.0% smokers for southeast, $12346.94 mean claim charges, and 17.85% smokers for southwest, $13406.38 mean claim charges, and 20.68% smokers for northeast, and $12417.58 mean claim charges, and 17.85% smokers for northwest.
+    
+    """
     print(f"The percentage of claims greater than $50,000 is approximately {percentage}%")
-
     print(f"For every one unit increase in BMI, charges are expected to increase by ${slope}.")
-
-
     print(
     f"The average insurance claim charges and percent smokers by region are: "
     f"${mean_charges_by_region['southeast']} mean claim charges, and "
-    f"{percent_smoker_region['southeast']}% smokers for southeast, "
+    f"{percent_smoker_by_region['southeast']}% smokers for southeast, "
     f"${mean_charges_by_region['southwest']} mean claim charges, and "
     f"{percent_smoker_by_region['southwest']}% smokers for southwest, "
     f"${mean_charges_by_region['northeast']} mean claim charges, and "
