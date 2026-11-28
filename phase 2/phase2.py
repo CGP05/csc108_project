@@ -1,3 +1,5 @@
+"""Analyze health insurance claims data"""
+
 from typing import Any
 
 CSV_FILE = "insurance.csv"
@@ -41,12 +43,12 @@ def convert_data_types(raw_data: list[list[str]]) -> list[list[Any]]:
     return converted_data
 
 
-def remove_outliers_and_illogical_data(
+def remove_illogical_data(
     converted_data: list[list[Any]],
 ) -> list[list[Any]]:
     """
     Even though the insurance.csv dataset does not have any illogical data (such as having negative children or a bmi of zero)
-    >>> remove_outliers_and_illogical_data([[-29, 'female', 0.0, -1, True, 'southwest', 1000.000]])
+    >>> remove_illogical_data([[-29, 'female', 0.0, -1, True, 'southwest', 1000.000]])
     []
     """
     valid_data = []
@@ -182,12 +184,11 @@ def percent_smoker_by_region(valid_data: list) -> dict[str, float]:
     return percent_smoker_by_region
 
 
-def find_region_with_highest_charges(mean_charges_by_region: dict, index: int) -> int:
+def highest_charge_region(mean_charges_by_region: dict, index: int) -> int:
     """
     Find the region with the highest mean claim charges and return its index.
 
-    >>> find_region_with_highest_charges(
-        {'southwest': 2000.0, 'southeast': 3000.0, 'northwest': 1000.0}, 0))
+    >>> highest_charge_region({'southwest': 2000.0, 'southeast': 3000.0, 'northwest': 1000.0}, 0)
     1
     """
     each_region = list(mean_charges_by_region.keys())
@@ -211,7 +212,7 @@ def charges_ranked_by_region(mean_regional_charges: dict[str, float]) -> list[st
     regions = list(mean_regional_charges.keys())
 
     for region_index in range(len(regions) - 1):
-        swap_index = find_region_with_highest_charges(
+        swap_index = highest_charge_region(
             mean_regional_charges, region_index
         )
         regions[region_index], regions[swap_index] = (
@@ -255,7 +256,7 @@ if __name__ == "__main__":
     doctest.testmod(verbose=True)
     raw_data = load_data(CSV_FILE)
     cleaned_data = convert_data_types(raw_data)
-    valid_data = remove_outliers_and_illogical_data(cleaned_data)
+    valid_data = remove_illogical_data(cleaned_data)
 
     slope_val = ols_slope_bmi_and_charges(valid_data)
     percentage_val = percent_high_claims(valid_data)
