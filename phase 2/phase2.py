@@ -233,21 +233,24 @@ def main(slope: float, percentage: float, mean_charges_by_region: dict, percent_
     The percentage of claims greater than $50,000 is approximately 0.52%
     For every one unit increase in BMI, charges are expected to increase by $393.87.
     The average insurance claim charges and percent smokers by region are: $14735.41 mean claim charges, and 25.0% smokers for southeast, $12346.94 mean claim charges, and 17.85% smokers for southwest, $13406.38 mean claim charges, and 20.68% smokers for northeast, and $12417.58 mean claim charges, and 17.85% smokers for northwest.
+    The index of the highest region is 0
     
     """
+    index_of_highest_region = highest_charge_region(mean_charges_by_region, 0)
     print(f"The percentage of claims greater than $50,000 is approximately {percentage}%")
     print(f"For every one unit increase in BMI, charges are expected to increase by ${slope}.")
     print(
-    f"The average insurance claim charges and percent smokers by region are: "
-    f"${mean_charges_by_region['southeast']} mean claim charges, and "
-    f"{percent_smoker_by_region['southeast']}% smokers for southeast, "
-    f"${mean_charges_by_region['southwest']} mean claim charges, and "
-    f"{percent_smoker_by_region['southwest']}% smokers for southwest, "
-    f"${mean_charges_by_region['northeast']} mean claim charges, and "
-    f"{percent_smoker_by_region['northeast']}% smokers for northeast, and "
-    f"${mean_charges_by_region['northwest']} mean claim charges, and "
-    f"{percent_smoker_by_region['northwest']}% smokers for northwest."
-)
+        f"The average insurance claim charges and percent smokers by region are: "
+        f"${mean_charges_by_region['southeast']} mean claim charges, and "
+        f"{percent_smoker_by_region['southeast']}% smokers for southeast, "
+        f"${mean_charges_by_region['southwest']} mean claim charges, and "
+        f"{percent_smoker_by_region['southwest']}% smokers for southwest, "
+        f"${mean_charges_by_region['northeast']} mean claim charges, and "
+        f"{percent_smoker_by_region['northeast']}% smokers for northeast, and "
+        f"${mean_charges_by_region['northwest']} mean claim charges, and "
+        f"{percent_smoker_by_region['northwest']}% smokers for northwest."
+    )
+    print(f"The index of the highest region is {index_of_highest_region}")
 
 
 if __name__ == "__main__":
