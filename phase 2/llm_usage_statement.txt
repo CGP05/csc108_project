@@ -2,4 +2,4 @@ I used Gemini to helpp correct my errors from phase 1 where I treated strings as
 
 I used ChatGPT to brainstorm which functions to add using week 7 to 10 material.
 
-I used ChatGPT for some help with implementing the new dictionary functions.
+I used ChatGPT for some help with implementing the new dictionary functions and doctests for them.

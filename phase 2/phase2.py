@@ -15,7 +15,9 @@ def load_data(csvfile: str) -> list[list[str]]:
         file.readline()  # to skip header
         for line in file:
             row = line.strip().split(",")  # tokenizing
-            if (len(row) == 7):  # ensuring that there is data for each column for each row
+            if (
+                len(row) == 7
+            ):  # ensuring that there is data for each column for each row
                 raw_data.append(row)
     return raw_data
 
@@ -39,7 +41,9 @@ def convert_data_types(raw_data: list[list[str]]) -> list[list[Any]]:
     return converted_data
 
 
-def remove_outliers_and_illogical_data(converted_data: list[list[Any]]) -> list[list[Any]]:
+def remove_outliers_and_illogical_data(
+    converted_data: list[list[Any]],
+) -> list[list[Any]]:
     """
     Even though the insurance.csv dataset does not have any illogical data (such as having negative children or a bmi of zero)
     >>> remove_outliers_and_illogical_data([[-29, 'female', 0.0, -1, True, 'southwest', 1000.000]])
@@ -52,7 +56,9 @@ def remove_outliers_and_illogical_data(converted_data: list[list[Any]]) -> list[
         children = row[3]
         charges = row[6]
 
-        if (age > 0 and bmi > 0.0 and children >= 0 and charges > 0.0):  # removing irrational data
+        if (
+            age > 0 and bmi > 0.0 and children >= 0 and charges > 0.0
+        ):  # removing irrational data
             valid_data.append(row)
     return valid_data
 
@@ -75,7 +81,6 @@ def percent_high_claims(valid_data: list[list[Any]]) -> float:
     return round(percentage, 2)
 
 
-
 def ols_slope_bmi_and_charges(valid_data: list[list[Any]]) -> float:
     """
     Precondition: len(valid_data) != 0
@@ -84,6 +89,7 @@ def ols_slope_bmi_and_charges(valid_data: list[list[Any]]) -> float:
     Formula: sum of each individual BMI observation minus the mean BMI times each individual charges observation minues the mean charges, divided by the squared sum of each individual BMI observation minus the mean BMI.
     >>> ols_slope_bmi_and_charges([[30, 'female', 20.0, 1, False, 'southwest', 1000.0],[40, 'male', 30.0, 2, True, 'southeast', 3000.0]])
     200.0
+    >>>
     """
     n = len(valid_data)
 
@@ -111,9 +117,12 @@ def ols_slope_bmi_and_charges(valid_data: list[list[Any]]) -> float:
 def average_charges_by_region(valid_data: list) -> dict[str, float]:
     """
     Calculate the mean charge for each of the 4 regions.
+
+    >>> average_charges_by_region([[29, "female", 27.9, 0, True, "southwest", 1000.0], [28, 'male', 33.77, 1, False, 'southwest', 3000.0], [40, 'male', 30.0, 2, True, 'southeast', 2000.0]]))
+    {'southwest': 2000.0, 'southeast': 2000.0}
     """
     charges_by_region = {}
-    
+
     for row in valid_data:
         region = row[5]
         charges = row[6]
@@ -134,7 +143,6 @@ def average_charges_by_region(valid_data: list) -> dict[str, float]:
         mean = total / len(charges_list)
         mean_charges_by_region[region] = round(mean, 2)
 
-
     return mean_charges_by_region
 
 
@@ -148,22 +156,79 @@ def percent_smoker_by_region(valid_data: list) -> dict[str, float]:
     for row in valid_data:
         region = row[5]
         smoker = row[4]
-    
-    return percent_smoker_regions
 
-def charges_ranked_by_region(mean_regional_charges: dict[str,float]) -> list[str]:
-    """
-    Use selection sort to rank the 4 regions from highest to lowest average charge. 
-    """
-    
-    return reginal_charges_sorted
+        if region not in smokers_by_region:
+            smokers_by_region[region] = 0
+            total_by_region[region] = 0
 
-def main(slope: float, percentage: float) -> None:
+        total_by_region[region] += 1
+
+        if smoker:
+            smokers_by_region[region] += 1
+
+    percent_smoker_by_region = {}
+
+    for region, smoker_count in smokers_by_region.items():
+        total = total_by_region[region]
+        percentage = (smoker_count / total) * 100
+        percent_smoker_by_region[region] = round(percentage, 2)
+
+    return percent_smoker_by_region
+
+
+def find_region_with_highest_charges(mean_charges_by_region: dict, index: int) -> int:
+    """
+    Find the region with the highest mean claim charges and return its index
+    """
+    each_region = list(mean_charges_by_region.keys())
+    index_of_highest_region = index
+
+    for region_index in range(index, len(each_region)):
+        if (
+            (mean_charges_by_region[each_region[index_of_highest_region]])
+            < mean_charges_by_region[each_region[region_index]]
+        ):
+            index_of_highest_region = region_index
+
+    return index_of_highest_region
+
+
+def charges_ranked_by_region(mean_regional_charges: dict[str, float]) -> list[str]:
+    """
+    Use selection sort to rank the 4 regions from highest to lowest average charge.
+    """
+    regions = list(mean_regional_charges.keys())
+
+    for region_index in range(len(regions) - 1):
+        swap_index = find_region_with_highest_charges(
+            mean_regional_charges, region_index
+        )
+        regions[region_index], regions[swap_index] = (
+            regions[swap_index],
+            regions[region_index],
+        )
+
+    return regions
+
+
+def main(slope: float, percentage: float, mean_charges_by_region: dict, percent_smoker_by_region: dict,) -> None:
     """Print the summary statistics for the insurance claims dataset."""
     print(f"The percentage of claims greater than $50,000 is approximately {percentage}%")
-    print(f"For every one unit increase in BMI, charges are expected to increase by ${slope}.")
-    print(f"The average insurance claim charges and percent smokers by region are as follows: {} mean claim charges and {} percent smokers for southeast, {} mean claim charges and {} percent smokers for southwest, {} mean claim charges and {} percent smokers for for northeast, and {} mean claim charges and {} percent smokers for northwest.")
 
+    print(f"For every one unit increase in BMI, charges are expected to increase by ${slope}.")
+
+
+    print(
+    f"The average insurance claim charges and percent smokers by region are: "
+    f"${mean_charges_by_region['southeast']} mean claim charges, and "
+    f"{percent_smoker_region['southeast']}% smokers for southeast, "
+    f"${mean_charges_by_region['southwest']} mean claim charges, and "
+    f"{percent_smoker_by_region['southwest']}% smokers for southwest, "
+    f"${mean_charges_by_region['northeast']} mean claim charges, and "
+    f"{percent_smoker_by_region['northeast']}% smokers for northeast, and "
+    f"${mean_charges_by_region['northwest']} mean claim charges, and "
+    f"{percent_smoker_by_region['northwest']}% smokers for northwest."
+)
 
 
 if __name__ == "__main__":
@@ -177,4 +242,7 @@ if __name__ == "__main__":
     slope_val = ols_slope_bmi_and_charges(valid_data)
     percentage_val = percent_high_claims(valid_data)
 
-    main(slope_val, percentage_val)
+    mean_charges_by_region = average_charges_by_region(valid_data)
+    percent_smoker_region = percent_smoker_by_region(valid_data)
+
+    main(slope_val, percentage_val, mean_charges_by_region, percent_smoker_region)
